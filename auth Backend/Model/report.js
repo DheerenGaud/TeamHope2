@@ -12,12 +12,16 @@ const ReportSchema = mongoose.Schema({
     type:String,
   },
   suggested_dr:{
-    name:String,
-    more_info:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Doctor",
-        required: true
-    }
-  },  
+       
+  },
+  link:{
+    type:String,
+    require:true
+  },
+  discription_by_doc:{
+    type:String
+  }
 });
-module.exports = mongoose.model("DailyReport", DailyReportSchema);
+module.exports = mongoose.model("Report", ReportSchema);

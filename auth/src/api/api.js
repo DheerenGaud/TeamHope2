@@ -21,6 +21,24 @@ export const newuser= async(data)=>{
         console.log("error is occur in adding user by api")
   }
 }
+export const newhospital= async(data)=>{
+  console.log(data)
+  try{
+      return await axios.post(`${BACKEND_URL}/auth/singUp/hospital`,data)
+  }
+  catch(err){
+        console.log("error is occur in adding user by api")
+  }
+}
+export const newMediclaimCompany= async(data)=>{
+  console.log(data)
+  try{
+      return await axios.post(`${BACKEND_URL}/auth/singUp/MediclaimCompany`,data)
+  }
+  catch(err){
+        console.log("error is occur in adding user by api")
+  }
+}
 export const UserVarification= async(data)=>{
   let {userId,uniqueString}=data;
   console.log(userId);

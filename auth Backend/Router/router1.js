@@ -241,7 +241,7 @@ Router.post("/singUp/MediclaimCompany",async(req,res)=>{
                 Register_no,name,password:encryptPassword,email,Company_Gst_no,Register_nHospitalVarified:false
                 })
                 .then((x)=>{
-                    res.json({status:"ok",data:"Hospital successfully ragistered"})
+                    res.json({status:"ok",data:"MediclaimCompany successfully ragistered"})
                 })
                 .catch((err)=>{
                     console.log(err);
@@ -249,7 +249,7 @@ Router.post("/singUp/MediclaimCompany",async(req,res)=>{
                 })
             }
             else{
-                return res.json({ status: "error", data: "Hospital allredy exsist" });
+                return res.json({ status: "error", data: "MediclaimCompany allredy exsist" });
             }
         }).catch((err)=>{
             console.log(err)

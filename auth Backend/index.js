@@ -3,6 +3,7 @@ const cors = require("cors");
 const bodyparser = require("body-parser");
 const Router1=require("./Router/router1")
 const Router2=require("./Router/router2")
+const Router3=require("./Router/router3")
 const mongoose = require("mongoose");
 const  grid = require('gridfs-stream');
 // const connected = require("./db/db")
@@ -30,6 +31,7 @@ connected();
 
 app.use("/auth",Router1);
 app.use("/hospital",Router2);
+app.use("/report",Router3);
 
 
 let gfs, gridfsBucket;

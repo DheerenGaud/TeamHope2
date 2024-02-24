@@ -3,6 +3,8 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
+import TextArea from '@mui/material/TextareaAutosize';
+
 import  { useState ,useRef, useEffect} from 'react';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
@@ -14,7 +16,7 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {newuser} from "../api/api"
+import {newuser,newhospital,newMediclaimCompany} from "../api/api"
 
 const defaultTheme = createTheme();
 
@@ -27,24 +29,74 @@ export default function SignUp() {
     cpassword:"",
     age:"",
     blood_group:"A+",
+    type:"patient",
+    name:"",address:"",GST_NO:"",
+    Company_Gst_no:"",Register_no:""
 })
 
+ const [showUser,setShowUser]=useState(true);
+ const [showHospital,setHospital]=useState(false);
+ const [showMediclaimcom,setMediclaimcom]=useState(false);
+
+
 const handleChange=(e)=>{
+  console.log(e.target.name);
+  if("type"==e.target.name&&data.type!=e.target.value){
+       if(e.target.value==="patient"){
+        setShowUser(true);
+        setHospital(false)
+        setMediclaimcom(false)
+       }
+       else if(e.target.value=="hospital"){
+        setShowUser(false);
+        setHospital(true)
+        setMediclaimcom(false)
+       }else{
+        setShowUser(false);
+        setHospital(false)
+        setMediclaimcom(true)
+       }
+  }
   setData({...data,[e.target.name]:e.target.value})
 }
+
 
 const handleClick = async (e)=>{
     e.preventDefault()
     console.log(data)
     if(data.cpassword==data.password&&data.password!=""){
-      const x= await newuser(data)
-      console.log(x.data)
-      if(x.data.status==="Pending"){
+      if(data.type=="patient"){
+        const x= await newuser(data)
+        console.log(x.data)
+        if(x.data.status==="Pending"){
+            alert(x.data.data);
+            window.location.href="./login"
+        }
+        else{
           alert(x.data.data);
-          window.location.href="./login"
+        }
+      }
+      else if(data.type=="hospital"){
+        const x= await newhospital(data)
+        console.log(x.data)
+        if(x.data){
+            alert(x.data.data);
+            window.location.href="./login"
+        }
+        else{
+          alert(x.data.data);
+        }
       }
       else{
-        alert(x.data.data);
+        const x= await newMediclaimCompany(data)
+        console.log(x.data)
+        if(x.data){
+            alert(x.data.data);
+            window.location.href="./login"
+        }
+        else{
+          alert(x.data.data);
+        }
       }
     }
     else{
@@ -72,7 +124,23 @@ const handleClick = async (e)=>{
           </Typography>
           <Box component="form" noValidate sx={{ mt: 3 }}>
             <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
+            <InputLabel   fullWidth id="demo-simple-select-label">Type</InputLabel>
+  <Select
+    labelId="demo-simple-select-label"
+    fullWidth
+    id="demo-simple-select"
+    value={data.type}
+    name="type"
+    label="Age"
+    onChange={handleChange}
+  >
+<MenuItem value="patient">Patient</MenuItem>
+   <MenuItem value="hospital">Hospital</MenuItem>
+<MenuItem value="mediclaimComp">Medical Company</MenuItem>
+
+  </Select>
+
+            { showUser?<><Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
                   name="Fname"
@@ -106,6 +174,8 @@ const handleClick = async (e)=>{
                   autoComplete="email"
                 />
               </Grid>
+              
+              
               <Grid item xs={12}>
                 <TextField
                   required
@@ -143,12 +213,13 @@ const handleClick = async (e)=>{
               </Grid>
               <InputLabel
               putLabel   fullWidth id="demo-simple-select-label">Blood Group</InputLabel>
+              <Grid item xs={12}>
   <Select
     labelId="demo-simple-select-label"
     fullWidth
     id="demo-simple-select"
     value={data.blood_group}
-    name="type"
+    name="blood_group"
     label="Age"
     onChange={handleChange}
   >
@@ -160,6 +231,151 @@ const handleClick = async (e)=>{
 <MenuItem value="AB-">AB-</MenuItem>
 
   </Select>
+  </Grid>
+              </>:<></>}
+              
+              {
+                showHospital?<>
+<Grid item xs={12} >
+                <TextField
+                  autoComplete="given-name"
+                  name="name"
+                  onChange={handleChange}
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="Hospital Name"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  onChange={handleChange}
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  onChange={handleChange}
+                  id="GST_NO"
+                  label="GST NO"
+                  name="GST_NO"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextArea
+                  required
+                  fullWidth
+                  onChange={handleChange}
+                  id="address"
+                  label="Address"
+                  name="address"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  onChange={handleChange}
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  onChange={handleChange}
+                  name="cpassword"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                />
+              </Grid>
+                </>:<></>
+              }
+              {
+   showMediclaimcom?<>
+   <Grid item xs={12} >
+                <TextField
+                  autoComplete="given-name"
+                  name="name"
+                  onChange={handleChange}
+                  required
+                  fullWidth
+                  id="firstName"
+                  label="Compony Name"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  onChange={handleChange}
+                  id="email"
+                  label="Email Address"
+                  name="email"
+                  autoComplete="email"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  onChange={handleChange}
+                  id="Company_Gst_no"
+                  label="Company GST NO"
+                  name="Company_Gst_no"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  onChange={handleChange}
+                  id="Register_no"
+                  label="Register NO"
+                  name="Register_no"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  onChange={handleChange}
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  onChange={handleChange}
+                  name="cpassword"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                />
+              </Grid></>:<></>
+              }
+          
              
   </Grid>
             <Button
