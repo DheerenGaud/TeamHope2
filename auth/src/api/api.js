@@ -15,7 +15,7 @@ export const singin= async(data)=>{
 export const newuser= async(data)=>{
   console.log(data)
   try{
-      return await axios.post(`${BACKEND_URL}/auth/singUp`,data)
+      return await axios.post(`${BACKEND_URL}/auth/singUp/user`,data)
   }
   catch(err){
         console.log("error is occur in adding user by api")

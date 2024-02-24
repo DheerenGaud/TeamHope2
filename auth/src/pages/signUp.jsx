@@ -10,6 +10,9 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import InputLabel from '@mui/material/InputLabel';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import {newuser} from "../api/api"
 
@@ -22,6 +25,8 @@ export default function SignUp() {
     email:"",
     password:"",
     cpassword:"",
+    age:"",
+    blood_group:"A+",
 })
 
 const handleChange=(e)=>{
@@ -104,6 +109,17 @@ const handleClick = async (e)=>{
               <Grid item xs={12}>
                 <TextField
                   required
+                  fullWidth
+                  onChange={handleChange}
+                  id="age"
+                  label="Age"
+                  name="age"
+                  autoComplete="age"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
                   onChange={handleChange}
                   fullWidth
                   name="password"
@@ -125,8 +141,27 @@ const handleClick = async (e)=>{
                   autoComplete="new-password"
                 />
               </Grid>
-           
-            </Grid>
+              <InputLabel
+              putLabel   fullWidth id="demo-simple-select-label">Blood Group</InputLabel>
+  <Select
+    labelId="demo-simple-select-label"
+    fullWidth
+    id="demo-simple-select"
+    value={data.blood_group}
+    name="type"
+    label="Age"
+    onChange={handleChange}
+  >
+<MenuItem value="A+">A+</MenuItem>
+   <MenuItem value="B+">B+</MenuItem>
+<MenuItem value="O+">O+</MenuItem>
+<MenuItem value="O-">O-</MenuItem>
+<MenuItem value="AB+">AB+</MenuItem>
+<MenuItem value="AB-">AB-</MenuItem>
+
+  </Select>
+             
+  </Grid>
             <Button
               type="submit"
               fullWidth

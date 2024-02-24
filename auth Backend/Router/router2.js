@@ -7,7 +7,10 @@ const nodemailer =require("nodemailer");
 
 
 const Doctor = require("../Model/doctor.js")
+const User = require("../Model/user.js")
 const Hospital = require("../Model/hospital.js")
+const Daily_report = require("../Model/daily_report.js")
+const Repo = require("../Model/repo.js")
 
 const { Varification } = require("../middleware/index");
 
@@ -135,8 +138,6 @@ Router.post("/addDr",upload.single("certificate"),Varification,async(req,res)=>{
     }
 })
 
-
-
 Router.post("/removeDr",Varification,async (req, res) => {
     try {
         console.log(req.body);
@@ -161,6 +162,120 @@ Router.post("/removeDr",Varification,async (req, res) => {
         res.status(500).json({ message: 'Server Error' });
     }
 });
+
+
+Router.post("/addNewDailyReport",Varification,async (req, res) => {
+    try {
+        console.log(req.body);
+        const {short_descriftn,future_action,medical_Prescripstion,bill_id,report_id,repo_id}=req.body;
+        // Find the hospital containing the doctor and remove the doctor from its doctors array
+const date=Date.now();
+       const daily_report = new Daily_report({
+        date,short_descriftn,future_action,medical_Prescripstion,Bill:bill_id,report_id
+       })
+      await daily_report.save();
+        
+        const repo = await Repo.findOne({_id:repo_id});
+        if (!repo) {
+            return res.status(404).json({ message: 'Repo not found' });
+        }
+        repo.Activity.push(daily_report._id);
+        res.json({ message: 'Daily Report Created successfully' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+
+
+Router.post("/newadmit",Varification,async (req, res) => {
+    try {
+        const { email,dr_id} = req.body;
+        console.log(req.body);
+        //check for any present repo in hospital
+        const hospitalemail = await req.body.user_id;
+        const hospitalid = await Hospital.findOne({email:hospitalemail});
+        const isUserAdmitted = hospitalid.hospital_patient_Active_array.some(patientId => patientId.toString() === hospitalemail);
+    
+
+        const user = await User.findOne({
+            $or: [{email}]
+        })
+
+        if(!user){
+            res.status(500).json({ message: 'The patient have not registered on our website.please first register!!' });
+        }
+        console.log(hospitalid);
+       if(!isUserAdmitted){
+            // Get the current date
+            const currentDate = new Date();
+            // Create a new report object
+            const newReport = new Repo({
+            date: currentDate,
+            hospital: hospitalid._id
+            });
+
+            // Save the new report object
+            await newReport.save();
+            const doctor=await Doctor.findOne({_id:dr_id});
+            if(!doctor){
+                res.status(500).json({ message: 'Doctor not found!!' });
+ 
+            }
+            doctor.patient_array.push(user._id)
+            hospitalid.hospital_patient_Active_array.push(user._id)
+            user.repo_list.push(newReport);
+            await user.save();
+            await doctor.save();
+            await hospitalid.save();
+            res.json({ message: 'the user successfully careated a repo' });
+
+       }else{
+          res.status(500).json({ message: 'The user with the email already have a repo in that hospital ' });
+       }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+
+
+Router.post("/editDailyReport", Varification, async (req, res) => {
+    try {
+        const { date, short_descriftn, future_action, medical_Prescripstion, Bill, dailyDetail_id } = req.body;
+        // Check if the dailyDetail_id is provided
+        if (!dailyDetail_id) {
+            return res.status(400).json({ message: 'Daily Detail ID is required for editing' });
+        }
+
+        // Find the existing daily report by its ID
+        const existingReport = await Daily_report.findOne({ _id: dailyDetail_id });
+
+        // Check if the report exists
+        if (!existingReport) {
+            return res.status(404).json({ message: 'Daily Report not found' });
+        }
+
+        // Update the existing daily report with new values
+        existingReport.date = date;
+        existingReport.short_descriftn = short_descriftn;
+        existingReport.future_action = future_action;
+        existingReport.medical_Prescripstion = medical_Prescripstion;
+        existingReport.Bill = Bill;
+
+        // Save the updated daily report
+        await existingReport.save();
+
+        res.json({ message: 'Daily Report updated successfully' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+
+
 module.exports= Router
 
 

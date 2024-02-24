@@ -6,11 +6,8 @@ const ReportSchema = mongoose.Schema({
     require:true
   },
  hospital:{
-     name:String,
-     more_info:{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Hospital",
-     }
  },
  Activity:[{
     type: mongoose.Schema.Types.ObjectId,
@@ -24,7 +21,16 @@ bills_array:{
     ref: "Bill",
 },
 medical_aprove:{
-    type:true,
+    type:Boolean,
+    default:false,
+    require:true
+},
+doctor_working_on_repo:{
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "Doctor",
+},
+disCharge:{
+  type:Boolean,
     default:false,
     require:true
 }

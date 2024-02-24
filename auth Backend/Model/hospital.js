@@ -25,6 +25,16 @@ const HospitalSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "Doctor",
   }],
+  hospital_patient_Active_array: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  }],
+  hospital_patient_Discharge_array: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  }],
   HospitalVarified: {
     type: Boolean,
     default:false,
