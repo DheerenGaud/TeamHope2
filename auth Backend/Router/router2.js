@@ -20,10 +20,8 @@ const storage= new GridFsStorage({
     options: { useNewUrlParser: true },
     file: (request, file) => {
         const match = ["image/png", "image/jpg"];
-  
         if(match.indexOf(file.memeType) === -1) 
             return`${Date.now()}-blog-${file.originalname}`;
-  
         return {
             bucketName: "photos",
             filename: `${Date.now()}-blog-${file.originalname}`
@@ -46,11 +44,10 @@ function generatePassword(length) {
 }
 
 
-Router.post("/addDr",upload.single("certificate"),Varification,async(req,res)=>{
+Router.post("/addDr",upload.single("certificate_array"),Varification,async(req,res)=>{
     console.log(req.file.filename);
-    
     try {
-        const { name, email, specialization, experience,certificate_array } = req.body;
+        const { name, email, specialization, experience } = req.body;
 
 
         if (!email) {
@@ -268,6 +265,21 @@ Router.post("/editDailyReport", Varification, async (req, res) => {
         await existingReport.save();
 
         res.json({ message: 'Daily Report updated successfully' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+});
+Router.get("/getHospitalInfo", Varification, async (req, res) => {
+    try {
+        // Check if the dailyDetail_id is provided
+        const hospitalid = await req.body.user_id;
+        const hospital = await Hospital.findOne({email:hospitalid});
+         console.log(hospital);
+        // Save the updated daily report
+
+        res.json({ message: ' successfully find the hospital data'  ,"data":{hospital}});
 
     } catch (error) {
         console.error(error);

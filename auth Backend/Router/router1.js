@@ -295,10 +295,10 @@ Router.post("/login/doctor",async(req,res)=>{
     const {email,password}=req.body;
     try {
         const doctor = await Doctor.findOne({ email });
+        console.log(doctor);
         if (!doctor) {
           return res.json({status: "error", data: "doctor not found", redirect: "" });
         } else {
-          
           if (await bycrpt.compare(password, doctor.password)){
             const token = jwt.sign({ email: doctor.email }, process.env.JWT_SECREAT, {
               expiresIn: 3600, //to expire the token in 3600sec

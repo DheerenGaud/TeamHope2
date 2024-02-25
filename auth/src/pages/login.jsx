@@ -13,7 +13,7 @@ import { createTheme, ThemeProvider} from '@mui/material/styles';
 import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
-import { singin  } from '../api/api';
+import { singin,singinHospital,singinDoctor,singinMediclaimCompany} from '../api/api';
 import { useState ,useRef, useEffect} from 'react';
 
 const defaultTheme = createTheme();
@@ -30,21 +30,73 @@ export default function SignIn() {
   };
   
   const handleClick = async (e) => {
-    e.preventDefault();
-    console.log(data);
-    // const x = await singin(data);
-    // console.log(x.data);
-    // if (x.data.status === "ok") {
-    //   window.localStorage.setItem("token", x.data.data);
-    //   window.localStorage.setItem("loginStatus", true);
-    //       // window.location.href="./"
-    //       console.log("login sucess");
-    // }
-    // else{
-    //      console.log("error");
-    //      alert(x.data.data)
-    //     //  window.location.href="./login"
-    // }
+
+    if(data.type=="patient"){
+      const x = await singin(data);
+      console.log(x.data);
+      if (x.data.status === "ok") {
+        window.localStorage.setItem("token", x.data.data);
+        window.localStorage.setItem("loginStatus", true);
+        window.location.href="./"
+        console.log("login sucess");
+      }
+      else{
+           console.log("error");
+           alert(x.data.data)
+           window.location.href="./login"
+      }
+    }
+    else if(data.type=="hospital"){
+      const x = await singinHospital(data);
+      console.log(x.data);
+      if (x.data.status === "ok") {
+        window.localStorage.setItem("token", x.data.data);
+        window.localStorage.setItem("loginStatus", true);
+            window.location.href="./HospitalU/HospitalDashBoard"
+      }
+      else{
+           console.log("error");
+           window.location.href="./login"
+      }
+    
+    }
+    else if(data.type=="doctors"){
+      const x = await singinDoctor(data);
+      console.log(x.data);
+      if (x.data.status === "ok") {
+        window.localStorage.setItem("token", x.data.data);
+        window.localStorage.setItem("loginStatus", true);
+            window.location.href="./Doctor/DoctorDashboard"
+            console.log("login sucess");
+      }
+      else{
+           console.log("error");
+           alert(x.data.data)
+           window.location.href="./login"
+      }
+    
+    }
+    else{
+      const x = await singinMediclaimCompany(data);
+      console.log(x.data);
+      if (x.data.status === "ok") {
+        window.localStorage.setItem("token", x.data.data);
+        window.localStorage.setItem("loginStatus", true);
+            window.location.href="./Mediclaim/MediclaimDashBoard"
+            console.log("login sucess");
+      }
+      else{
+           console.log("error");
+           alert(x.data.data)
+           window.location.href="./login"
+      }
+    
+    }
+
+
+
+
+   
 
   };
 
@@ -120,7 +172,7 @@ export default function SignIn() {
                   Forgot password?
                 </Link>
               </Grid>
-              <Link href="./signUp" variant="body2">
+              <Link href="/signUp" variant="body2">
                  New Account? Sign Up
                 </Link>
             </Grid>
