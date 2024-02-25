@@ -279,6 +279,18 @@ Router.get("/getHospitalInfo", Varification, async (req, res) => {
          console.log(hospital);
         // Save the updated daily report
 
+           const data = []
+
+          console.log(hospital.dr_array.name);
+          
+            // Create an inner array with _id and dr_array properties
+            const innerList = [hospital._id, hospital.dr_array];
+
+        
+            // Push the inner array to the data array
+            data.push(innerList);
+        
+        
         res.json({ message: ' successfully find the hospital data'  ,"data":{hospital}});
 
     } catch (error) {

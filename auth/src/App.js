@@ -49,6 +49,7 @@ import HospitalProfile from './pages/Hospital/HospitalProfile';
 import DoctorDashboard from './pages/Doctor/DoctorDashboard';
 import HospitalDashBoard from './pages/HospitalU/HospitalU/HospitalDashBoard';
 import MediclaimDashBoard from './pages/Mediclaim/MediclaimDashBoard';
+import PatientDashboard from './pages/Patient/PatientDashBoard';
 
 export default function App() {
   const loginStatus = window.localStorage.getItem('loginStatus');
@@ -72,6 +73,7 @@ export default function App() {
           <Route path="/Doctor/DoctorDashboard" element={<DoctorDashboard />} />
           <Route path="/HospitalU/HospitalDashBoard" element={<HospitalDashBoard />} />
           <Route path="/Mediclaim/MediclaimDashBoard" element={<MediclaimDashBoard />} />
+          <Route path="/Patient/PatientDashBoard" element={<PatientDashboard />} />
         </Routes>
       </Router>
     </>

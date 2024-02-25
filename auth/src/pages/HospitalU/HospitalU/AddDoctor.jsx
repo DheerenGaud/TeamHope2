@@ -23,6 +23,7 @@ const AddDoctor = ({ hospital }) => {
     console.log(data);
     const x= await AddDr({data,token});
     console.log(x.data.message);
+    alert(x.data.message)
   };
 
   return (

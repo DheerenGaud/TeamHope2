@@ -37,7 +37,7 @@ export default function SignIn() {
       if (x.data.status === "ok") {
         window.localStorage.setItem("token", x.data.data);
         window.localStorage.setItem("loginStatus", true);
-        window.location.href="./"
+        window.location.href="./Patient/PatientDashBoard"
         console.log("login sucess");
       }
       else{

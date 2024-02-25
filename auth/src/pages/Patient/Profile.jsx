@@ -1,9 +1,7 @@
 import React from "react";
 import { Typography, Paper, Box, Divider } from "@mui/material";
 
-const Profile = ({ hospital }) => {
-  // Dummy data for hospital (replace with actual data from backend API)
-
+const Profile = ({ patient }) => {
   return (
     <Box
       sx={{
@@ -15,45 +13,35 @@ const Profile = ({ hospital }) => {
     >
       <Paper elevation={3} sx={{ width: "80%", maxWidth: 600, p: 4 }}>
         <Typography variant="h4" sx={{ mb: 2, fontWeight: "bold" }}>
-          Hospital Profile
+          Patient Profile
         </Typography>
         <Divider sx={{ mb: 2 }} />
         <Box sx={{ mb: 2 }}>
           <Typography variant="subtitle1" sx={{ fontSize: "1.1rem" }}>
-            <strong>Name:</strong> {hospital.name}
+            <strong>Name:</strong> {patient.name}
           </Typography>
           <Typography variant="subtitle1" sx={{ fontSize: "1.1rem" }}>
-            <strong>Address:</strong> {hospital.address}
+            <strong>Age:</strong> {patient.age}
           </Typography>
           <Typography variant="subtitle1" sx={{ fontSize: "1.1rem" }}>
-            <strong>Email:</strong> {hospital.email}
+            <strong>Gender:</strong> {patient.gender}
           </Typography>
           <Typography variant="subtitle1" sx={{ fontSize: "1.1rem" }}>
-            <strong>GST No:</strong> {hospital.GST_NO}
+            <strong>Email:</strong> {patient.email}
           </Typography>
           <Typography variant="subtitle1" sx={{ fontSize: "1.1rem" }}>
-            <strong>Verified:</strong>{" "}
-            {hospital.HospitalVarified ? "Yes" : "No"}
+            <strong>Contact:</strong> {patient.contact}
+          </Typography>
+          <Typography variant="subtitle1" sx={{ fontSize: "1.1rem" }}>
+            <strong>Patient ID:</strong> {patient.patientId}
+          </Typography>
+          <Typography variant="subtitle1" sx={{ fontSize: "1.1rem" }}>
+            <strong>Insurance:</strong> {patient.insurance}
+          </Typography>
+          <Typography variant="subtitle1" sx={{ fontSize: "1.1rem" }}>
+            <strong>Policy No:</strong> {patient.policyNo}
           </Typography>
         </Box>
-        <Divider sx={{ my: 2 }} />
-        <Typography variant="h5" sx={{ mt: 3, mb: 1 }}>
-          Doctors:
-        </Typography>
-        {hospital.dr_array.map((doctor) => (
-          <div key={doctor._id} sx={{ ml: 2, mt: 1 }}>
-            <Typography
-              variant="subtitle1"
-              sx={{ fontSize: "1.2rem", fontWeight: "bold" }}
-            >
-              {doctor.name}
-            </Typography>
-            <Typography variant="body1" sx={{ fontSize: "1rem" }}>
-              <strong>Specialization:</strong> {doctor.specialization}
-            </Typography>
-            <Divider sx={{ my: 1 }} />
-          </div>
-        ))}
       </Paper>
     </Box>
   );

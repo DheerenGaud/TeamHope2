@@ -17,13 +17,6 @@ const HospitalDashBoard = () => {
     getInfo();
   },[])
 
-  const getInfo= async()=>{
-    const x= await getHospitalInfo({token});
-    console.log(x.data);
-    setHospital(x.data.data.hospital)
-  }
-   
-
   const hospital = {
     name: "Example Hospital",
     address: "123 Example St, City, Country",
@@ -32,10 +25,18 @@ const HospitalDashBoard = () => {
     HospitalVarified: false,
 
     dr_array: [
-      { _id: 1, name: "Dr. John Doe", specialization: "Cardiologist" },
-      { _id: 2, name: "Dr. Jane Smith", specialization: "Neurologist" },
+      { _id: "65da5503097e7de1e12063a6", name: "Dr. John Doe", specialization: "Cardiologist" },
+      { _id: "65da5503097e7de1e12063a6", name: "Dr. Jane Smith", specialization: "Neurologist" },
     ],
   };
+  const getInfo= async()=>{
+    const x= await getHospitalInfo({token});
+    console.log(x.data);
+    setHospital(hospital)
+  }
+   
+
+  
 
   return (
     <PersistentDrawer items={items} heading={hospitalinfo.name}>
